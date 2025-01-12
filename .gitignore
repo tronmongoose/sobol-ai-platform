@@ -1,6 +1,55 @@
-node_modules
-dist
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Testing
+coverage/
+
+# Production
+dist/
+build/
+server/public/
+
+# Development
+*.local
+.env
+.env.*
+!.env.example
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 .DS_Store
-server/public
+*.pem
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# TypeScript
+*.tsbuildinfo
 vite.config.ts.*
+
+# Replit specific
+.replit/
+.cache/
+.upm/
+.config/
+.node-gyp/
 *.tar.gz
+
+# Project specific
+postgres/
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
