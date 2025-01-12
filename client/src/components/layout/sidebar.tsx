@@ -1,10 +1,11 @@
 import { Link } from "wouter";
-import { Home, Bot, Trophy, Settings } from "lucide-react";
+import { Home, Bot, Trophy, Settings, Lock } from "lucide-react";
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: Home },
   { name: "AI Agents", href: "/agents", icon: Bot },
   { name: "Missions", href: "/missions", icon: Trophy },
+  { name: "Darknet Hub", href: "/darknet", icon: Lock },
   { name: "Settings", href: "/settings", icon: Settings },
 ];
 
