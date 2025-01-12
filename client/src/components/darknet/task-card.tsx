@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Coins, Shield } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { executeTransaction } from "@/lib/web3";
 
 interface Task {
   id: string;
@@ -30,23 +31,36 @@ export default function TaskCard({ task }: TaskCardProps) {
 
   const acceptMutation = useMutation({
     mutationFn: async () => {
-      const res = await fetch(`/api/darknet/tasks/${task.id}/accept`, {
-        method: "POST",
-      });
-      if (!res.ok) throw new Error("Failed to accept task");
-      return res.json();
+      try {
+        // First register acceptance on backend
+        const res = await fetch(`/api/darknet/tasks/${task.id}/accept`, {
+          method: "POST",
+        });
+        if (!res.ok) throw new Error("Failed to accept task");
+
+        // Execute CDP transaction to lock collateral
+        await executeTransaction({
+          to: process.env.VITE_CDP_CONTRACT_ADDRESS || "",
+          amount: task.reward * 0.1, // Lock 10% of reward as collateral
+          data: `accept_task:${task.id}`, // Custom data for the contract
+        });
+
+        return res.json();
+      } catch (error) {
+        throw new Error("Failed to accept task: " + (error as Error).message);
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/darknet/tasks"] });
       toast({
         title: "Task Accepted",
-        description: "You have successfully accepted this task.",
+        description: "You have successfully accepted this task and locked collateral.",
       });
     },
-    onError: () => {
+    onError: (error) => {
       toast({
         title: "Error",
-        description: "Failed to accept task. Please try again.",
+        description: error.message,
         variant: "destructive",
       });
     },
