@@ -6,8 +6,8 @@ import NotFound from "@/pages/not-found";
 import Dashboard from "@/pages/dashboard";
 import Onboarding from "@/pages/onboarding";
 import DarknetHub from "@/pages/darknet";
-import Sidebar from "@/components/layout/sidebar";
 import Navbar from "@/components/layout/navbar";
+import Sidebar from "@/components/layout/sidebar";
 
 function Router() {
   return (
@@ -17,9 +17,9 @@ function Router() {
         <Navbar />
         <main className="p-6">
           <Switch>
-            <Route path="/" component={Dashboard} />
             <Route path="/onboarding" component={Onboarding} />
             <Route path="/darknet" component={DarknetHub} />
+            <Route path="/" component={Dashboard} />
             <Route component={NotFound} />
           </Switch>
         </main>
