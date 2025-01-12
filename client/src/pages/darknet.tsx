@@ -4,7 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Plus, Lock } from "lucide-react";
 import TaskPost from "@/components/darknet/task-post";
 import TaskCard from "@/components/darknet/task-card";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogTrigger 
+} from "@/components/ui/dialog";
 import { useQuery } from "@tanstack/react-query";
 
 interface Task {
@@ -18,7 +25,7 @@ interface Task {
 
 export default function DarknetHub() {
   const [isPostingTask, setIsPostingTask] = useState(false);
-  
+
   const { data: tasks } = useQuery<Task[]>({
     queryKey: ["/api/darknet/tasks"],
   });
@@ -40,6 +47,12 @@ export default function DarknetHub() {
             </Button>
           </DialogTrigger>
           <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Post New Task</DialogTitle>
+              <DialogDescription>
+                Create a new task for the Darknet Hub. Set the details and rewards below.
+              </DialogDescription>
+            </DialogHeader>
             <TaskPost onSuccess={() => setIsPostingTask(false)} />
           </DialogContent>
         </Dialog>
