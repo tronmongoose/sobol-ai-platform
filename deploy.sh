@@ -17,22 +17,31 @@ if [ ! -f .gitignore ]; then
     touch .gitignore
 fi
 
-# Add all files
+# Stage all files
 git add .
 
-# Commit changes
-git commit -m "Initial commit"
+# Commit changes if there are any
+git diff --staged --quiet || git commit -m "Initial commit"
 
-# Create repository and push
+# Create repository only if it doesn't exist
 REPO_NAME="sobol-ai-platform"
-curl -X POST -H "Authorization: token $GITHUB_TOKEN" \
+REPO_CHECK=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: token $GITHUB_TOKEN" \
      -H "Accept: application/vnd.github.v3+json" \
-     https://api.github.com/user/repos \
-     -d "{\"name\":\"$REPO_NAME\",\"private\":false}"
+     "https://api.github.com/repos/$GITHUB_USERNAME/$REPO_NAME")
+
+if [ "$REPO_CHECK" == "404" ]; then
+    curl -X POST -H "Authorization: token $GITHUB_TOKEN" \
+         -H "Accept: application/vnd.github.v3+json" \
+         https://api.github.com/user/repos \
+         -d "{\"name\":\"$REPO_NAME\",\"private\":false}"
+fi
+
+# Remove existing remote if it exists
+git remote remove origin 2>/dev/null || true
 
 # Add remote and push
 git remote add origin "https://x-access-token:$GITHUB_TOKEN@github.com/$GITHUB_USERNAME/$REPO_NAME.git"
 git branch -M main
-git push -u origin main
+git push -f origin main
 
-echo "Repository deployed successfully to GitHub!"
+echo "Repository deployed successfully to GitHub: https://github.com/$GITHUB_USERNAME/$REPO_NAME"
