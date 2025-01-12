@@ -26,7 +26,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 const taskSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(10, "Description must be at least 10 characters"),
-  reward: z.string().transform((val) => parseInt(val, 10)),
+  reward: z.number().min(1, "Reward must be at least 1 SOBOL"),
   difficulty: z.enum(["easy", "medium", "hard"]),
 });
 
@@ -44,7 +44,7 @@ export default function TaskPost({ onSuccess }: TaskPostProps) {
     defaultValues: {
       title: "",
       description: "",
-      reward: "",
+      reward: 0,
       difficulty: "medium",
     },
   });
@@ -122,6 +122,7 @@ export default function TaskPost({ onSuccess }: TaskPostProps) {
                   type="number"
                   placeholder="Enter reward amount"
                   {...field}
+                  onChange={(e) => field.onChange(Number(e.target.value))}
                 />
               </FormControl>
               <FormMessage />
