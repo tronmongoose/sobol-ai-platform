@@ -48,8 +48,8 @@ export async function getAgentStatus(): Promise<{
   timestamp: string;
 }> {
   try {
-    // If OpenAI API key is not configured, return a mock status
-    if (!import.meta.env.VITE_OPENAI_API_KEY) {
+    const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
+    if (!apiKey) {
       return {
         active: false,
         lastAction: "API key not configured",
