@@ -1,4 +1,4 @@
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { Home, Bot, Trophy, Settings, Lock } from "lucide-react";
 
 const navigation = [
@@ -23,10 +23,10 @@ export default function Sidebar() {
                 {navigation.map((item) => (
                   <li key={item.name}>
                     <Link href={item.href}>
-                      <a className="group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold text-gray-400 hover:text-white hover:bg-gray-800">
+                      <div className="group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold text-gray-400 hover:text-white hover:bg-gray-800 cursor-pointer">
                         <item.icon className="h-6 w-6 shrink-0" aria-hidden="true" />
                         {item.name}
-                      </a>
+                      </div>
                     </Link>
                   </li>
                 ))}

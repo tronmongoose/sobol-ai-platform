@@ -40,7 +40,7 @@ export default function TaskCard({ task }: TaskCardProps) {
 
         // Execute CDP transaction to lock collateral
         await executeTransaction({
-          to: process.env.VITE_CDP_CONTRACT_ADDRESS || "",
+          to: import.meta.env.VITE_CDP_CONTRACT_ADDRESS || "",
           amount: task.reward * 0.1, // Lock 10% of reward as collateral
           data: `accept_task:${task.id}`, // Custom data for the contract
         });
